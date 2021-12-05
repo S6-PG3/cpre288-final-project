@@ -21,8 +21,12 @@ void displayStats(oi_t *sensor_data, int parameter){
     lcd_clear();
     oi_update(sensor_data);
 
+    //keeps track of bumper status
     char bump [5];
+    //keeps track of distance travelled compared to the user input on the GUI for the robot to move
     int distTravelled;
+
+
     while (1){
         lcd_clear();
         oi_update(sensor_data);
@@ -32,52 +36,67 @@ void displayStats(oi_t *sensor_data, int parameter){
         //when left bumper is detected
         if (sensor_data->bumpLeft == 1 ){
             sprintf(bump, "Left");
-            //lcd_printf("left");
         }
+
         //when right bumper is detected
         else if (sensor_data->bumpRight == 1 ){
         sprintf(bump, "Right");
-        //d_printf("right");
         }
+
         //when both bumpers is detected
         else if (sensor_data->bumpLeft == 1 && sensor_data->bumpRight == 1){
         sprintf(bump, "Both");
-
-    //  lcd_printf("both");
         }
+
         //when no bumper is detected
         else {
         sprintf(bump, "None");
         }
 
+/*
+ // to determine distance traveled
 
-//  for distance travelled
-//      while (parameter > 0){
-//
-//       distTravelled = 0;
-//
-//      if (!sensor_data->bumpRight == 1 || !sensor_data->bumpLeft == 1  || !(sensor_data->bumpLeft == 1 && sensor_data->bumpRight == 1)){
-//          oi_update(sensor_data);
-//           distTravelled += sensor_data->distance;
-//
-//              if (distTravelled == parameter){
-//                   distTravelled =0;
-//                  }
-//      }
-//      else {
-//           distTravelled =0;
-//      }
-//
-//      }
+     // when the user's input is greater than 0, this loop will execute
+      while (parameter > 0){
+
+      distTravelled = 0;
+
+      //when there are no bumpers pressed, the distance traveled is the current distance
+      if (!sensor_data->bumpRight == 1 || !sensor_data->bumpLeft == 1  || !(sensor_data->bumpLeft == 1 && sensor_data->bumpRight == 1)){
+          oi_update(sensor_data);
+           distTravelled += sensor_data->distance;
+
+              //when the distance reaches the user input, the distance traveled is reset
+              if (distTravelled == parameter){
+                   distTravelled =0;
+                  }
+      }
+      //if the bumpers are pressed, distance traveled is reset
+      else {
+           distTravelled =0;
+      }
+
+      }
+
+*/
+        /*
+         * String that contains stats to be displayed on the LCD
+         * Stats are the following:
+         * BATTERY: Battery percentage on the roomba
+         * BUMP: Bumper status determined by if statements above
+         * CLIFF: Cliff Signal from the Front Left
+         * DISTANCE: The distance traveled in comparison to the distance entered by user in the GUI
+         */
         char stats [100];
 
 
         sprintf(stats, "Battery: %.2f%%     Bump: %s          Cliff: %d           Distance: %d", (float) (sensor_data->batteryCharge * (1.0) / sensor_data->batteryCapacity), bump, sensor_data->cliffFrontLeftSignal,distTravelled);
 
-
+      //clears any previous entry and places the string that was just made with the sensor information
       lcd_clear();
       lcd_puts(stats);
 
+      //delay so the LCD doesn't update too quickly
       timer_waitMillis(100);
     }
 }
