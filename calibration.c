@@ -162,7 +162,8 @@ void IR_calibration(void)
         int IR_raw_sample = adc_read();
         float IR_dist = adc_to_cm(adc_read());
 
-        lcd_printf("sound: %.4f\nraw: %d\nir: %.4f\nbattery: %.2f%%", sound_dist, IR_raw_sample, adc_to_cm(IR_raw_sample), (float) (sensor_data->batteryCharge * (1.0) / sensor_data->batteryCapacity) * 100.0);
+        lcd_printf("sound: %.4f\nraw: %d\nir: %.4f\nbattery: %.2f%%", sound_dist, IR_raw_sample, adc_to_cm(IR_raw_sample), (float) (sensor_data->batteryCharge * (1.0)));
+                   /// sensor_data->batteryCapacity) * 100.0);
         timer_waitMillis(1000);
 
     }
