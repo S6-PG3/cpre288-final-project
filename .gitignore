@@ -50,5 +50,3 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
-
-!tm4c123gh6pm.cmd
