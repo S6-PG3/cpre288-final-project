@@ -77,7 +77,7 @@ void displayStats(oi_t *sensor_data, int parameter){
       }
 
       }
-ssss
+sssss
 */
         /*
          * String that contains stats to be displayed on the LCD
