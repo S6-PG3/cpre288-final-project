@@ -16,6 +16,9 @@
 #include "movement.h"
 #include "scan.h"
 #include "uart.h"
+#include "object.h"
+
+object objectArray[20];
 
 /* 
  * Parses given char pointer by the following formats:

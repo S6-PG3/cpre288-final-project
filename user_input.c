@@ -10,6 +10,7 @@
 #include "user_input.h"
 
 
+
 /* 
  * Parses given char pointer by the following formats:
  * 		"[Function],[Parameter]\0"
@@ -82,6 +83,10 @@ void ui_execute(oi_t *sensor_data, scan_t *get_scan, char function, int paramete
 			    scan_sendData(get_scan, parameter);
 			}
 			break;
+		case 'b':
+		    scan_objects(get_scan, objectArray);
+		    scan_sendObjects(objectArray);
+		    break;
 		case 'z':
 			// Program completion
 			break;

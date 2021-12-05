@@ -37,6 +37,6 @@ void scan_sendData(scan_t *get_scan, int angle);
 
 void scan_objects(scan_t *get_scan, object *objectArray);
 
-void scan_sendObjects();
+void scan_sendObjects(object *objectArray);
 
 #endif /* SCAN_H_ */

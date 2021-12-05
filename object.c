@@ -19,3 +19,4 @@ void objectCopy(object* source, object* target) {
     target->linearWidth = source->linearWidth;
 
 }
+

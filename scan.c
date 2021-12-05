@@ -49,6 +49,7 @@ void scan_objects(scan_t *get_scan, object *objectArray)
     double previous_distance = 0.0;
     int current_angle = 0;
 
+
     scan(get_scan, 0);
     //does this scan wait until servo is at 0 degrees? Otherwise:
     //timer_waitMillis(200);
@@ -87,11 +88,19 @@ void scan_objects(scan_t *get_scan, object *objectArray)
         }
         current_angle++;
     }
-    /*void scan_sendObjects(){
 
-    }
-    */
+
 }
 
+
+void scan_sendObjects(object *objectArray){
+    char temp[50];
+
+    int i;
+    for(i = 0; i < sizeof(objectArray) / sizeof(*objectArray); i++){
+        sprintf(temp, "%d,%f,%d, %d, %f", i+1, objectArray[i].distance, objectArray[i].startAngle, objectArray[i]. radialWidth, objectArray[i].linearWidth);
+        uart_sendStr(temp);
+    }
+}
 
 
