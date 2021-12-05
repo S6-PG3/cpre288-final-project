@@ -13,6 +13,7 @@
 #include "ping.h"
 #include "servo.h"
 #include "uart.h"
+#include "object.h"
 
 // Scan value
 typedef struct{
@@ -34,7 +35,7 @@ void scan_full(scan_t *get_scan);
 
 void scan_sendData(scan_t *get_scan, int angle);
 
-void scan_objects(scan_t *get_scan);
+void scan_objects(scan_t *get_scan, object *objectArray);
 
 void scan_sendObjects();
 
