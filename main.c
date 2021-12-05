@@ -4,8 +4,8 @@
 
 // Run each independently of each other
 #define _SERVO_CALIBRATION 0
-#define _IR_CALIBRATION 0
-#define _MAIN 1
+#define _IR_CALIBRATION 1
+#define _MAIN 0
 
 #include <stdio.h>
 #include "open_interface.h"
@@ -26,9 +26,9 @@ extern volatile int uart_receive_flag;
 /*
  * Run _SERVO_CALIBRATION by itself to find values for these. Currently set for bot06
  */
-int right_calibration_value = 313984;
-int left_calibration_value = 286848;
-int BOT = 6;
+int right_calibration_value = 311040;
+int left_calibration_value = 281728;
+int BOT = 8;
 
 scan_t get_scan;
 oi_t *sensor_data;
