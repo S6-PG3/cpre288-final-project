@@ -26,6 +26,7 @@
 #include "ping.h"
 #include "adc.h"
 #include "open_interface.h"
+#include "scan.h"
 
 /*
  *  Small program to calibrate the servo motor.
