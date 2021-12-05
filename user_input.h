@@ -15,8 +15,7 @@
 #include "open_interface.h"
 #include "movement.h"
 #include "scan.h"
-
-extern scan_t get_scan;
+#include "uart.h"
 
 /* 
  * Parses given char pointer by the following formats:
@@ -27,7 +26,7 @@ extern scan_t get_scan;
  * 
  *  @param command - Null terminated char pointer to parse
  */
-void ui_parse(oi_t *sensor_data, char *command);
+void ui_parse(oi_t *sensor_data, scan_t *get_scan, char *command);
 
 /*
  * Execute desired function with given integer parameter.
@@ -38,6 +37,6 @@ void ui_parse(oi_t *sensor_data, char *command);
  * @param function - Single char to represent desired instructions to execute
  * 		  parameter - Integer value to give the function call as a distance or angle
  */
-void ui_execute(oi_t *sensor_data, char function, int parameter);
+void ui_execute(oi_t *sensor_data, scan_t *get_scan, char function, int parameter);
 
 #endif /* USER_INPUT_H_ */

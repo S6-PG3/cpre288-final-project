@@ -57,9 +57,8 @@ int main(void)
     oi_t *sensor_data = oi_alloc();
     oi_init(sensor_data);
 
-
     char command[20];
-//    clear_array(command);
+    clear_array(command);
 
     int cmd_index = 0;
     while (1)
@@ -68,13 +67,13 @@ int main(void)
         {
             uart_receive_flag = 0;
             command[cmd_index] = uart_data;
-            lcd_putc(uart_data);
+            //lcd_putc(uart_data);
             if (command[cmd_index] == '\0')
             {
 
                 lcd_printf("%s", command);
-                ui_parse(sensor_data, command);
-//                clear_array(command);
+                ui_parse(sensor_data, &get_scan, command);
+                clear_array(command);
                 cmd_index = 0;
             }
             else {
@@ -97,5 +96,6 @@ void clear_array(char* command)
     while (cmd_index < 15) {
         *command = 0;
         command++;
+        cmd_index++;
     }
 }
