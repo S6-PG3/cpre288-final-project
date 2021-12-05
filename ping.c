@@ -20,7 +20,7 @@ void ping_init(void)
     SYSCTL_RCGCGPIO_R |= 0b000010;          //enable port B clock
     SYSCTL_RCGCTIMER_R |= 0b001000;         // enable Timer clock
 
-    GPIO_PORTB_AFSEL_R &= 0b11110111;       //disable PB3 as alternate function, set to GPIO
+    GPIO_PORTB_AFSEL_R &= 0b11110111; //disable PB3 as alternate function, set to GPIO
 
     // Sets PB3 to GPIO output
     GPIO_PORTB_PCTL_R |= 0x00007000;        // Selects timer (T3CCP1)
@@ -29,15 +29,15 @@ void ping_init(void)
     GPIO_PORTB_DEN_R |= 0b00001000;         // enable PB3 digital function
     GPIO_PORTB_DIR_R |= 0b00001000;         // Set PB3 to output
 
-    TIMER3_CTL_R &= 0b011111111;            // disable timer3 B to config interrupts
+    TIMER3_CTL_R &= 0b011111111;        // disable timer3 B to config interrupts
 
     //Initialize Timer Registers
-    TIMER3_CTL_R |= 0b110000000000;         //Enable both edge trigger for T(b)EVENT
+    TIMER3_CTL_R |= 0b110000000000;     //Enable both edge trigger for T(b)EVENT
     TIMER3_CFG_R |= 0x4;                    //Use split 16-bit timers
     TIMER3_TBPR_R |= 0xFF;
     TIMER3_TBMR_R |= 0b0111;                //Set for Capture mode
     TIMER3_TBMR_R &= 0b0111;
-    TIMER3_TBILR_R |= 0xFFFF;               //Read from both TBPS and TBR and shift
+    TIMER3_TBILR_R |= 0xFFFF;            //Read from both TBPS and TBR and shift
 
     ping_interrupt_init();
 
@@ -49,9 +49,9 @@ void ping_init(void)
 void ping_interrupt_init(void)
 {
     TIMER3_ICR_R |= 0b010000000000;         // Clears interrupt flags
-    TIMER3_IMR_R |= 0b010000000000;         // enable capture interrupt for timer B
+    TIMER3_IMR_R |= 0b010000000000;      // enable capture interrupt for timer B
 
-    NVIC_EN1_R |= 0b00010000;               // Enable 16/32bit timer3B interrupt in NVIC_EN#_R (int# 36)
+    NVIC_EN1_R |= 0b00010000; // Enable 16/32bit timer3B interrupt in NVIC_EN#_R (int# 36)
 
     NVIC_PRI9_R |= 0x20;
 
@@ -67,18 +67,18 @@ void ping_interrupt_init(void)
  */
 void ping_timer3b_handler(void)
 {
-    if (state == LOW)                       // If current state is low, set state to high and store start time
+    if (state == LOW) // If current state is low, set state to high and store start time
     {
         rising_time = TIMER3_TBR_R;
         state = HIGH;
     }
-    else if (state == HIGH)                 // If current state is high, set state to done and store end time
+    else if (state == HIGH) // If current state is high, set state to done and store end time
     {
         falling_time = TIMER3_TBR_R;
         state = DONE;
     }
 
-    TIMER3_ICR_R |= 0b010000000000;         // Clear timer3B capture mode event interrupt
+    TIMER3_ICR_R |= 0b010000000000; // Clear timer3B capture mode event interrupt
 
 } // END ping_timer3b_handler
 
@@ -108,8 +108,9 @@ float ping_read(void)
             {
                 distance = (delta_clocks - 1599.24) / 926.907;
             }
-            if else (BOT == 8) {
-                distance = (delta_Clocks - 959.653) / 938.964)
+            else if (BOT == 8)
+            {
+                distance = (delta_clocks - 959.653) / 938.964;
             }
             else // Theoretical distance when speed of sound is 340 m/s
             {
@@ -132,22 +133,22 @@ float ping_read(void)
  */
 void ping_send_trigger(void)
 {
-    TIMER3_IMR_R &= 0b101111111111;         // Mask Timer B Capture Mode Event Interrupt (disable)
+    TIMER3_IMR_R &= 0b101111111111; // Mask Timer B Capture Mode Event Interrupt (disable)
 
-    // Set PB3 to GPIO output device
-    GPIO_PORTB_AFSEL_R &= 0b11110111;       //disable PB3 as alternate function, set to GPIO
+// Set PB3 to GPIO output device
+    GPIO_PORTB_AFSEL_R &= 0b11110111; //disable PB3 as alternate function, set to GPIO
     GPIO_PORTB_DIR_R |= 0b00001000;         // Set PB3 to output
 
-    // TRIGGER
+// TRIGGER
     GPIO_PORTB_DATA_R |= 0b00001000;        //PB3 set to high (1)
     timer_waitMillis(0.01);                 //wait 10 microseconds
     GPIO_PORTB_DATA_R &= 0b11110111;        //PB3 set to low (0)
 
-    // Set PB3 back to TIMER input device
-    GPIO_PORTB_AFSEL_R |= 0b00001000;       // set PB3 to alternate function (Timer)
+// Set PB3 back to TIMER input device
+    GPIO_PORTB_AFSEL_R |= 0b00001000;   // set PB3 to alternate function (Timer)
     GPIO_PORTB_DIR_R &= 0b11110111;         // Set PB3 to input
 
-    TIMER3_ICR_R |= 0b010000000000;         // Clear timer3B capture mode event interrupt
-    TIMER3_IMR_R |= 0b010000000000;         // Unmask timer3B capture mode event interrupt
+    TIMER3_ICR_R |= 0b010000000000; // Clear timer3B capture mode event interrupt
+    TIMER3_IMR_R |= 0b010000000000; // Unmask timer3B capture mode event interrupt
 
 } // END ping_send_trigger
