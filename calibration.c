@@ -154,17 +154,16 @@ void IR_calibration(void)
     oi_t *sensor_data = oi_alloc();
     oi_init(sensor_data);
 
+    scan_t get_scan;
+
     servo_move(90);
     while (1)
     {
-
-        float sound_dist = ping_read();
+        scan(&get_scan, 90);
         int IR_raw_sample = adc_read();
-        float IR_dist = adc_to_cm(adc_read());
 
-        lcd_printf("sound: %.4f\nraw: %d\nir: %.4f\nbattery: %.2f%%", sound_dist, IR_raw_sample, adc_to_cm(IR_raw_sample), (float) (sensor_data->batteryCharge * (1.0)));
-                   /// sensor_data->batteryCapacity) * 100.0);
-        timer_waitMillis(1000);
+        lcd_printf("sound: %.4f\nraw: %d\nir: %.4f\nbattery: %.2f%%", get_scan.sound_dist, IR_raw_sample, get_scan.IR_dist, (float) (sensor_data->batteryCharge * (1.0) / sensor_data->batteryCapacity) * 100.0);
+        timer_waitMillis(800);
 
     }
 } // END IR_calibration
