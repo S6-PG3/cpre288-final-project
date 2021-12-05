@@ -168,7 +168,14 @@ float adc_to_cm_7(int raw)
 }
 float adc_to_cm_8(int raw)
 {
-    return -1;
+    if (raw < 430)
+    {
+        return 100.0;
+    }
+    else
+    {
+        return ((32751.8 / (raw - 111.277)) - 2.16436);
+    }
 }
 float adc_to_cm_9(int raw)
 {

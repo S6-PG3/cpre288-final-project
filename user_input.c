@@ -19,7 +19,7 @@
  * 
  *  @param command - Null terminated char pointer to parse
  */
-void ui_parse(oi_t *sensor_data, char command[])
+void ui_parse(oi_t *sensor_data, scan_t *get_scan, char command[])
 {
     char function = *(command);
     int parameter;
@@ -39,7 +39,7 @@ void ui_parse(oi_t *sensor_data, char command[])
             parameter = -1;
         }
     }
-    ui_execute(sensor_data, function, parameter);
+    ui_execute(sensor_data, get_scan, function, parameter);
 
 } // END ui-parse
 
@@ -53,10 +53,11 @@ void ui_parse(oi_t *sensor_data, char command[])
  * @param function - Single char to represent desired instructions to execute
  * 		  parameter - Integer value to give the function call as a distance or angle
  */
-void ui_execute(oi_t *sensor_data, char function, int parameter) {
+void ui_execute(oi_t *sensor_data, scan_t *get_scan, char function, int parameter) {
 	switch(function) {
 		case 'w':
 			// Move forward parameter centimeters
+		    // Send message to GUI in format of "{distance traveled},{obstacle check}"
 		    move_forward(sensor_data, parameter);
 			break;
 		case 's':
@@ -73,10 +74,12 @@ void ui_execute(oi_t *sensor_data, char function, int parameter) {
 			break;
 		case 'm':
 			if (parameter == -1) {
-				// Scan 0 to 180	
+				// Scan 0 to 180
+			    scan_full(get_scan);
 			} else {
 				// Scan at parameter degrees
-			    scan(&get_scan, parameter);
+			    scan(get_scan, parameter);
+			    scan_sendData(get_scan, parameter);
 			}
 			break;
 		case 'z':
@@ -86,4 +89,5 @@ void ui_execute(oi_t *sensor_data, char function, int parameter) {
 			// Shouldn't ever go here
 			break;
 	}
+	uart_sendChar('\0');
 } // END ui_execute

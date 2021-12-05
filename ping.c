@@ -8,10 +8,6 @@
 #include "ping.h"
 #include "lcd.h"
 
-volatile enum states state;                 // Set by ISR
-volatile unsigned int rising_time;          // Pulse start time: Set by ISR
-volatile unsigned int falling_time;         // Pulse end time: Set by ISR
-
 /*
  * Method used to initialize ping sensor's GPIO registers and timer
  * registers based on settings such as capture mode, selecting timer#,
@@ -108,13 +104,16 @@ float ping_read(void)
             }
             delta_clocks += (rising_time - falling_time); // change in time in clock cycles
 
-            if (BOT == 6) // Hand calibrated sonar distance for BOT 06
+            if (BOT == 6 || BOT == 11) // Hand calibrated sonar distance for BOT 06
             {
                 distance = (delta_clocks - 1599.24) / 926.907;
             }
+            if else (BOT == 8) {
+                distance = (delta_Clocks - 959.653) / 938.964)
+            }
             else // Theoretical distance when speed of sound is 340 m/s
             {
-                int delta_time = (float) delta_clocks * 0.0000625; // change in time in milliseconds
+                float delta_time = (float) delta_clocks * 0.0000625; // change in time in milliseconds
                 distance = (delta_time * ((340.0 * 100.0) / 1000.0) / 2.0); // distance in centimeters
             }
 

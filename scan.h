@@ -12,11 +12,12 @@
 #include "adc.h"
 #include "ping.h"
 #include "servo.h"
+#include "uart.h"
 
 // Scan value
 typedef struct{
     float sound_dist;   // Distance from Ping SensorS
-    int IR_dist;        // Distance from IR sensor
+    float IR_dist;        // Distance from IR sensor
 } scan_t;
 
 
@@ -27,6 +28,14 @@ typedef struct{
  *      angle - Direction to point the sensors to
  *      getScan - Location of a scan_t struct to store scan values
  */
-void scan(scan_t* get_scan, int angle);
+void scan(scan_t *get_scan, int angle);
+
+void scan_full(scan_t *get_scan);
+
+void scan_sendData(scan_t *get_scan, int angle);
+
+void scan_objects(scan_t *get_scan);
+
+void scan_sendObjects();
 
 #endif /* SCAN_H_ */
