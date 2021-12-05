@@ -8,12 +8,18 @@
 
 #include "scan.h"
 
+extern volatile unsigned int rising_time;
+extern volatile unsigned int falling_time;
+
+
 void scan(scan_t *get_scan, int angle)
 {
     servo_move(angle);
     int IR_raw_sample = adc_read();
     get_scan->IR_dist = adc_to_cm(IR_raw_sample);
     get_scan->sound_dist = ping_read();
+
+
 }
 
 void scan_full(scan_t *get_scan)
@@ -37,5 +43,5 @@ void scan_sendData(scan_t *get_scan, int angle)
 }
 
 void scan_objects(scan_t *get_scan){
-
+    // "{center angle},{distance},{linearwidth};" "50,2.6435345.863060;
 }
