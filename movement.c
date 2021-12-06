@@ -40,6 +40,7 @@ float move_forward(oi_t *sensor_data, int centimeters)
         }
     }
 
+    send_distanceTraveled(sum, 0); //no obstacle detected
     oi_setWheels(0, 0); //STOP once distance has been reached
     return sum / 10;
 }
@@ -51,7 +52,7 @@ float move_forward(oi_t *sensor_data, int centimeters)
  *  back in "centimeters".
  *
  */
-void move_backward(oi_t *sensor_data, int centimeters)
+float move_backward(oi_t *sensor_data, int centimeters)
 {
     centimeters *= 10;
 
@@ -70,7 +71,9 @@ void move_backward(oi_t *sensor_data, int centimeters)
                    break;
                }
     }
+    send_distanceTraveled(sum, 0);
     oi_setWheels(0, 0);
+    return sum / 10;
 }
 
 /*
@@ -96,6 +99,7 @@ int rotate_clockwise(oi_t *sensor_data, int degrees)
                    break;
                }
     }
+    send_angleRotated(sum, 0); //no obstacle detected when rotating
     oi_setWheels(0, 0);
     return sum;
 }
@@ -122,6 +126,7 @@ int rotate_counterClockwise(oi_t *sensor_data, int degrees)
                           break;
                       }
     }
+    send_angleRotated(sum, 0);
     oi_setWheels(0, 0);
     return sum;
 }

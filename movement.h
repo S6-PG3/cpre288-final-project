@@ -31,7 +31,7 @@ float move_forward(oi_t *sensor_data, int centimeters);
  *  back in "centimeters".
  *
  */
-void move_backward(oi_t *sensor_data, int centimeters);
+float move_backward(oi_t *sensor_data, int centimeters);
 
 /*
  *  Method used to rotate robot clockwise.
