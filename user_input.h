@@ -19,6 +19,7 @@
 #include "object.h"
 
 object objectArray[20];
+extern int obstacle_result;
 
 /* 
  * Parses given char pointer by the following formats:

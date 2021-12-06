@@ -59,19 +59,20 @@ void ui_execute(oi_t *sensor_data, scan_t *get_scan, char function, int paramete
 		case 'w':
 			// Move forward parameter centimeters
 		    // Send message to GUI in format of "{distance traveled},{obstacle check}"
-		    move_forward(sensor_data, parameter);
+		    send_distanceTraveled(move_forward(sensor_data, parameter), obstacle);
 			break;
 		case 's':
 			// Move backward parameter centimeters
 		    move_backward(sensor_data, parameter);
+		    send_distanceTraveled(parameter, 0);
 			break;
 		case 'a':
 			// Rotate counter clockwise parameter degrees
-			rotate_counterClockwise(sensor_data, parameter);
+			send_angleRotated(rotate_counterClockwise(sensor_data, parameter), obstacle);
 		    break;
 		case 'd':
 			// Rotate clockwise parameter degrees
-		    rotate_clockwise(sensor_data, parameter);
+		    send_angleRotated(rotate_clockwise(sensor_data, parameter), obstacle);
 			break;
 		case 'm':
 			if (parameter == -1) {
@@ -94,5 +95,6 @@ void ui_execute(oi_t *sensor_data, scan_t *get_scan, char function, int paramete
 			// Shouldn't ever go here
 			break;
 	}
+	obstacle = 0;
 	uart_sendChar('\0');
 } // END ui_execute

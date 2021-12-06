@@ -11,6 +11,10 @@
 #ifndef MOVEMENT_H_
 #define MOVEMENT_H_
 
+#include "uart.h"
+
+int obstacle;
+
 /*
  *  Method used to navigate robot forward.
  *  User gives a value (in cm) to which
@@ -18,7 +22,7 @@
  *  back in "centimeters".
  *
  */
-int move_forward(oi_t *sensor_data, int centimeters);
+float move_forward(oi_t *sensor_data, int centimeters);
 
 /*
  *  Method used to navigate robot backwards.
@@ -36,7 +40,7 @@ void move_backward(oi_t *sensor_data, int centimeters);
  *  than the given input angle
  *
  */
-void rotate_clockwise(oi_t *sensor_data, int degrees);
+int rotate_clockwise(oi_t *sensor_data, int degrees);
 
 /*
  *  Method used to rotate robot counterclockwise.
@@ -45,7 +49,19 @@ void rotate_clockwise(oi_t *sensor_data, int degrees);
  *  than the given input angle
  *
  */
-void rotate_counterClockwise(oi_t *sensor_data, int degrees);
+int rotate_counterClockwise(oi_t *sensor_data, int degrees);
+
+/*
+ * Sends the distance traveled and if an obstacle was encountered to the GUI
+ */
+void send_distanceTraveled(float distance, int obstacle);
+
+
+/*
+ * Sends the angle rotated and if an obstacle was encountered to the GUI
+ */
+void send_angleRotated(int angle, int obstacle);
+
 
 /*
  *  A large method to detect obstacles during movement of the robot.

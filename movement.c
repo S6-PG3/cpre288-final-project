@@ -21,7 +21,7 @@
  *  back in "centimeters".
  *
  */
-int move_forward(oi_t *sensor_data, int centimeters)
+float move_forward(oi_t *sensor_data, int centimeters)
 {
     centimeters *= 10; //convert centimeters into millimeters
 
@@ -31,12 +31,16 @@ int move_forward(oi_t *sensor_data, int centimeters)
     while (sum < (centimeters)) //Stay in loop until sum has reached target user input
     {
         oi_update(sensor_data);
-
         sum += sensor_data->distance;
+
+        obstacle = obstacle_check(sensor_data);
+        if (obstacle_check != 0) {
+            break;
+        }
     }
 
     oi_setWheels(0, 0); //STOP once distance has been reached
-    return 0;
+    return sum / 10;
 }
 
 /*
@@ -69,7 +73,7 @@ void move_backward(oi_t *sensor_data, int centimeters)
  *  than the given input angle
  *
  */
-void rotate_clockwise(oi_t *sensor_data, int degrees)
+int rotate_clockwise(oi_t *sensor_data, int degrees)
 {
     double sum = 0;
     oi_setWheels(-30, 30); //Set wheel speed opposite of each other to acheive clockwise rotation
@@ -80,6 +84,7 @@ void rotate_clockwise(oi_t *sensor_data, int degrees)
         sum -= (sensor_data->angle); //Continue to rotate until it has reached target degree
     }
     oi_setWheels(0, 0);
+    return sum;
 }
 
 /*
@@ -89,7 +94,7 @@ void rotate_clockwise(oi_t *sensor_data, int degrees)
  *  than the given input angle
  *
  */
-void rotate_counterClockwise(oi_t *sensor_data, int degrees)
+int rotate_counterClockwise(oi_t *sensor_data, int degrees)
 {
     double sum = 0;
     oi_setWheels(30, -30); //Rotate counter clockwise
@@ -99,7 +104,21 @@ void rotate_counterClockwise(oi_t *sensor_data, int degrees)
         sum += (sensor_data->angle);
     }
     oi_setWheels(0, 0);
+    return sum;
 }
+
+void send_distanceTraveled(float distance, int obstacle){
+    char temp[20];
+    sprintf(temp, "%f,%d", distance, obstacle);
+    uart_sendStr(temp);
+}
+
+void send_angleRotated(int angle, int obstacle){
+    char temp[20];
+    sprintf(temp, "%d,%d", angle, obstacle);
+    uart_sendStr(temp);
+}
+
 
 /*
  *  A large method to detect obstacles during movement of the robot.
@@ -109,6 +128,7 @@ void rotate_counterClockwise(oi_t *sensor_data, int degrees)
  *  with navigation.
  *
  *     Method Returns:
+ *          0 : nothing
  *          1 : left bump sensor triggered
  *          2 : right bump sensor triggered
  *          3 : left cliff sensor detected boundary
@@ -120,6 +140,23 @@ void rotate_counterClockwise(oi_t *sensor_data, int degrees)
  *          9 : Right cliff sensor detected boundary
  *         10 : Right cliff sensor detected hole
  *
+ *     Method Returns: UPDATED?
+ *          0 : nothing
+ *          1 : left nump sensor
+ *          2 : left & right bump sensor
+ *          3 : right bump sensor
+ *          4 : left cliff sensor detected boundary
+ *          5 : Front left cliff sensor detected boundary
+ *          6 : Front right cliff sensor detected boundary
+ *          7 : Right cliff sensor detected boundary
+ *          8 : left cliff sensor detected hole
+ *          9 : Front left cliff sensor detected hole
+ *         10 : Front right cliff sensor detected hole
+ *         11 : Right cliff sensor detected hole
+ *
+ *         "{Distance or Angle traveled},{obstacle val}\0"
+ *
+ *
  */
 int obstacle_check(oi_t *sensor_data)
 {
@@ -127,6 +164,13 @@ int obstacle_check(oi_t *sensor_data)
 		//beep if the robot bumps an object
 		unsigned char beep [1] = {60};
         unsigned char duration[1] =  {25};
+    if (sensor_data->bumpLeft && sensor_data->bumpRight) {
+        oi_setWheels(0,0);
+        move_backward(sensor_data, 3);
+        oi_loadSong(1, 1, beep, duration);
+        oi_play_song(1);
+        return 2;
+    }
     if (sensor_data->bumpLeft)
     {
         oi_setWheels(0, 0); //STOP robot as soon as bump sensor = TRUE
@@ -141,16 +185,16 @@ int obstacle_check(oi_t *sensor_data)
         move_backward(sensor_data, 3);
         oi_loadSong(1, 1, beep, duration);
         oi_play_song(1);
-        return 2; //returns a 2 if right bump sensor = true
+        return 3; //returns a 2 if right bump sensor = true
     }
 //************CLIFF SENSORS***********************************************
     if (sensor_data->cliffLeft > 2800 || sensor_data->cliffLeft < 1600)
     {
         //TODO: Implement flag?
         oi_setWheels(0, 0); //STOP, robot sensed white tape or hole
-        rotate_counterClockwise(sensor_data, 45); //Turn left 45 degrees
+//        rotate_counterClockwise(sensor_data, 45); //Turn left 45 degrees
         move_backward(sensor_data, 5); //Move back 5 cm
-        rotate_clockwise(sensor_data, 45); //revert back to original angle
+//        rotate_clockwise(sensor_data, 45); //revert back to original angle
 
         if (sensor_data->cliffLeft > 2800){
             oi_update(sensor_data);
@@ -167,9 +211,9 @@ int obstacle_check(oi_t *sensor_data)
     {
         //TODO: Implement flag?
         oi_setWheels(0, 0); //STOP, robot sensed white tape or hole
-        rotate_counterClockwise(sensor_data, 60); //Turn left 60 degrees
+//        rotate_counterClockwise(sensor_data, 60); //Turn left 60 degrees
         move_backward(sensor_data, 5); //Move back 5 cm
-        rotate_clockwise(sensor_data, 60); //revert back to original angle
+//        rotate_clockwise(sensor_data, 60); //revert back to original angle
 
         if (sensor_data->cliffFrontLeft > 2800)
         {
@@ -187,9 +231,9 @@ int obstacle_check(oi_t *sensor_data)
     {
         //TODO: Implement flag?
                 oi_setWheels(0, 0);
-                rotate_clockwise(sensor_data, 60);
+//                rotate_clockwise(sensor_data, 60);
                 move_backward(sensor_data, 5);
-                rotate_counterClockwise(sensor_data, 60);
+//                rotate_counterClockwise(sensor_data, 60);
 
                 if (sensor_data->cliffFrontRight > 2800)
                 {
@@ -207,9 +251,9 @@ int obstacle_check(oi_t *sensor_data)
     {
         //TODO: Implement flag?
                oi_setWheels(0, 0);
-               rotate_clockwise(sensor_data, 45);
+//               rotate_clockwise(sensor_data, 45);
                move_backward(sensor_data, 5);
-               rotate_counterClockwise(sensor_data, 45);
+//               rotate_counterClockwise(sensor_data, 45);
 
                if (sensor_data->cliffRight > 2800){
                    oi_update(sensor_data);
