@@ -107,18 +107,31 @@ int rotate_counterClockwise(oi_t *sensor_data, int degrees)
     return sum;
 }
 
+/*
+ * Method to send GUI information of robot's distance traveled so far.
+ *
+ *      Information sent:
+ *              - distance
+ *              - obstacle# (if any were detected)
+ */
 void send_distanceTraveled(float distance, int obstacle){
     char temp[20];
     sprintf(temp, "%f,%d", distance, obstacle);
     uart_sendStr(temp);
 }
 
+/*
+ * Method to send GUI information of robot's angle.
+ *
+ *      Information sent:
+ *              - angle
+ *              - obstacle# (if any were detected)
+ */
 void send_angleRotated(int angle, int obstacle){
     char temp[20];
     sprintf(temp, "%d,%d", angle, obstacle);
     uart_sendStr(temp);
 }
-
 
 /*
  *  A large method to detect obstacles during movement of the robot.
@@ -142,7 +155,7 @@ void send_angleRotated(int angle, int obstacle){
  *
  *     Method Returns: UPDATED?
  *          0 : nothing
- *          1 : left nump sensor
+ *          1 : left bump sensor
  *          2 : left & right bump sensor
  *          3 : right bump sensor
  *          4 : left cliff sensor detected boundary
@@ -164,13 +177,7 @@ int obstacle_check(oi_t *sensor_data)
 		//beep if the robot bumps an object
 		unsigned char beep [1] = {60};
         unsigned char duration[1] =  {25};
-    if (sensor_data->bumpLeft && sensor_data->bumpRight) {
-        oi_setWheels(0,0);
-        move_backward(sensor_data, 3);
-        oi_loadSong(1, 1, beep, duration);
-        oi_play_song(1);
-        return 2;
-    }
+
     if (sensor_data->bumpLeft)
     {
         oi_setWheels(0, 0); //STOP robot as soon as bump sensor = TRUE
@@ -179,13 +186,20 @@ int obstacle_check(oi_t *sensor_data)
         oi_play_song(1);
         return 1; //return a 1 if left bump sensor = true
     }
+    if (sensor_data->bumpLeft && sensor_data->bumpRight) {
+            oi_setWheels(0,0);
+            move_backward(sensor_data, 3);
+            oi_loadSong(1, 1, beep, duration);
+            oi_play_song(1);
+            return 2; //return a 2 if left AND right bump sensor = true
+        }
     if (sensor_data->bumpRight)
     {
         oi_setWheels(0, 0); //STOP robot as soon as bumpRight = TRUE
         move_backward(sensor_data, 3);
         oi_loadSong(1, 1, beep, duration);
         oi_play_song(1);
-        return 3; //returns a 2 if right bump sensor = true
+        return 3; //returns a 3 if right bump sensor = true
     }
 //************CLIFF SENSORS***********************************************
     if (sensor_data->cliffLeft > 2800 || sensor_data->cliffLeft < 1600)
@@ -198,11 +212,11 @@ int obstacle_check(oi_t *sensor_data)
 
         if (sensor_data->cliffLeft > 2800){
             oi_update(sensor_data);
-            return 3; //tape detected for CL
+            return 4; //tape detected for CL
         }
         else{
             oi_update(sensor_data);
-            return 4; //hole detected for CL
+            return 5; //hole detected for CL
         }
     }
 
@@ -218,12 +232,12 @@ int obstacle_check(oi_t *sensor_data)
         if (sensor_data->cliffFrontLeft > 2800)
         {
             oi_update(sensor_data);
-            return 5; //tape detected for CFL
+            return 6; //tape detected for CFL
         }
         else
         {
             oi_update(sensor_data);
-            return 6; //hole detected for CFL
+            return 7; //hole detected for CFL
         }
     }
 
@@ -238,12 +252,12 @@ int obstacle_check(oi_t *sensor_data)
                 if (sensor_data->cliffFrontRight > 2800)
                 {
                     oi_update(sensor_data);
-                    return 7; //tape detected for CFR
+                    return 8; //tape detected for CFR
                 }
                 else
                 {
                     oi_update(sensor_data);
-                    return 8; //hole detected for CFR
+                    return 9; //hole detected for CFR
                 }
             }
 
@@ -257,11 +271,11 @@ int obstacle_check(oi_t *sensor_data)
 
                if (sensor_data->cliffRight > 2800){
                    oi_update(sensor_data);
-                   return 9; //tape detected for CR
+                   return 10; //tape detected for CR
                }
                else{
                    oi_update(sensor_data);
-                   return 10; //hole detected for CR
+                   return 11; //hole detected for CR
                }
            }
 
