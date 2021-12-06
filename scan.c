@@ -9,17 +9,12 @@
 #include "scan.h"
 #include "object.h"
 
-extern volatile unsigned int rising_time;
-extern volatile unsigned int falling_time;
-
-
 void scan(scan_t *get_scan, int angle)
 {
     servo_move(angle);
     int IR_raw_sample = adc_read();
     get_scan->IR_dist = adc_to_cm(IR_raw_sample);
     get_scan->sound_dist = ping_read();
-
 
 }
 
@@ -98,7 +93,7 @@ void scan_sendObjects(object *objectArray){
 
     int i;
     for(i = 0; i < sizeof(objectArray) / sizeof(*objectArray); i++){
-        sprintf(temp, "%d,%f,%d, %d, %f", i+1, objectArray[i].distance, objectArray[i].startAngle, objectArray[i]. radialWidth, objectArray[i].linearWidth);
+        sprintf(temp, "%f,%d,%f;", objectArray[i].distance, objectArray[i].startAngle, objectArray[i].linearWidth);
         uart_sendStr(temp);
     }
 }
