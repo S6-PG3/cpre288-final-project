@@ -56,12 +56,10 @@ int rotate_counterClockwise(oi_t *sensor_data, int degrees);
  */
 void send_distanceTraveled(float distance, int obstacle);
 
-
 /*
  * Sends the angle rotated and if an obstacle was encountered to the GUI
  */
 void send_angleRotated(int angle, int obstacle);
-
 
 /*
  *  A large method to detect obstacles during movement of the robot.

@@ -35,6 +35,7 @@ float move_forward(oi_t *sensor_data, int centimeters)
 
         obstacle = obstacle_check(sensor_data);
         if (obstacle_check != 0) {
+            send_distanceTraveled(sum, obstacle);
             break;
         }
     }
@@ -62,6 +63,12 @@ void move_backward(oi_t *sensor_data, int centimeters)
         oi_update(sensor_data);
 
         sum -= sensor_data->distance;
+
+        obstacle = obstacle_check(sensor_data);
+               if (obstacle_check != 0) {
+                   send_distanceTraveled(sum, obstacle);
+                   break;
+               }
     }
     oi_setWheels(0, 0);
 }
@@ -82,6 +89,12 @@ int rotate_clockwise(oi_t *sensor_data, int degrees)
     {
         oi_update(sensor_data);
         sum -= (sensor_data->angle); //Continue to rotate until it has reached target degree
+
+        obstacle = obstacle_check(sensor_data);
+               if (obstacle_check != 0) {
+                   send_angleRotated(sum, obstacle);
+                   break;
+               }
     }
     oi_setWheels(0, 0);
     return sum;
@@ -102,6 +115,12 @@ int rotate_counterClockwise(oi_t *sensor_data, int degrees)
     {
         oi_update(sensor_data);
         sum += (sensor_data->angle);
+
+        obstacle = obstacle_check(sensor_data);
+                      if (obstacle_check != 0) {
+                          send_angleRotated(sum, obstacle);
+                          break;
+                      }
     }
     oi_setWheels(0, 0);
     return sum;
@@ -132,6 +151,7 @@ void send_angleRotated(int angle, int obstacle){
     sprintf(temp, "%d,%d", angle, obstacle);
     uart_sendStr(temp);
 }
+
 
 /*
  *  A large method to detect obstacles during movement of the robot.
