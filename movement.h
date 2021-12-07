@@ -36,7 +36,7 @@ float move_forward(oi_t *sensor_data, int centimeters);
  *  back in "centimeters".
  *
  */
-void move_backward(oi_t *sensor_data, int centimeters);
+float move_backward(oi_t *sensor_data, int centimeters);
 
 /*
  *  Method used to rotate robot clockwise.
@@ -45,7 +45,7 @@ void move_backward(oi_t *sensor_data, int centimeters);
  *  than the given input angle
  *
  */
-int rotate_clockwise(oi_t *sensor_data, int degrees);
+float rotate_clockwise(oi_t *sensor_data, int degrees);
 
 /*
  *  Method used to rotate robot counterclockwise.
@@ -54,7 +54,7 @@ int rotate_clockwise(oi_t *sensor_data, int degrees);
  *  than the given input angle
  *
  */
-int rotate_counterClockwise(oi_t *sensor_data, int degrees);
+float rotate_counterClockwise(oi_t *sensor_data, int degrees);
 
 /*
  * Sends the distance traveled and if an obstacle was encountered to the GUI
@@ -64,7 +64,7 @@ void send_distanceTraveled(float distance, int obstacle);
 /*
  * Sends the angle rotated and if an obstacle was encountered to the GUI
  */
-void send_angleRotated(int angle, int obstacle);
+void send_angleRotated(float angle, int obstacle);
 
 /*
  *  A large method to detect obstacles during movement of the robot.

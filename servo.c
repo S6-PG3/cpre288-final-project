@@ -66,8 +66,14 @@ int servo_move(int angle)
     TIMER1_CTL_R |= 0b100000000;        // Enable timer
 
     // Experimental formula to determine time to wait depending on how far the servo has to move
-    timer_waitMillis(4 * abs(angle - current_angle) + 20); // Increase b value (ax+b) if having troubles
-
+    if (abs(angle - current_angle) < 2)
+    {
+        timer_waitMillis(2);
+    }
+    else
+    {
+        timer_waitMillis(4 * abs(angle - current_angle) + 20); // Increase b value (ax+b) if having troubles
+    }
     // Update currentAngle
     current_angle = angle;
     return match;

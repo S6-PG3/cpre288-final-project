@@ -28,6 +28,8 @@
 #include "open_interface.h"
 #include "scan.h"
 
+
+void cliff_calibration(void);
 /*
  *  Small program to calibrate the servo motor.
  *  User moves servo to 0 and 180 degrees and sets those values to

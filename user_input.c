@@ -9,7 +9,7 @@
 
 #include "user_input.h"
 
-
+object object_array[20];
 
 /* 
  * Parses given char pointer by the following formats:
@@ -55,6 +55,7 @@ void ui_parse(oi_t *sensor_data, scan_t *get_scan, char command[])
  * 		  parameter - Integer value to give the function call as a distance or angle
  */
 void ui_execute(oi_t *sensor_data, scan_t *get_scan, char function, int parameter) {
+    int num_objects;
 	switch(function) {
 		case 'w':
 			// Move forward parameter centimeters
@@ -63,8 +64,7 @@ void ui_execute(oi_t *sensor_data, scan_t *get_scan, char function, int paramete
 			break;
 		case 's':
 			// Move backward parameter centimeters
-		    move_backward(sensor_data, parameter);
-		    send_distanceTraveled(parameter, 0);
+		    send_distanceTraveled(move_backward(sensor_data, parameter), 0);
 			break;
 		case 'a':
 			// Rotate counter clockwise parameter degrees
@@ -85,8 +85,8 @@ void ui_execute(oi_t *sensor_data, scan_t *get_scan, char function, int paramete
 			}
 			break;
 		case 'b':
-		    scan_objects(get_scan, objectArray);
-		    scan_sendObjects(objectArray);
+		    num_objects = scan_objects(get_scan, object_array);
+		    scan_sendObjects(object_array, num_objects);
 		    break;
 		case 'z':
 			// Program completion

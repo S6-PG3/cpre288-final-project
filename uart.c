@@ -83,7 +83,7 @@ void uart_sendChar(char data)
     {
     }
     UART1_DR_R = data;                          // Send data
-    timer_waitMillis(2);                        // Does not work without
+    timer_waitMillis(1);                        // Does not work without
 
 } // END uart_sendChar
 

@@ -11,16 +11,16 @@
 
 typedef struct
 {
-    int startAngle;
+    int center_angle;
     float distance;
-    int radialWidth;
-    float linearWidth;
+    int radial_width;
+    float linear_width;
 } object;
 
 /*
  * Copies object source to target
  */
-void objectCopy(object* source, object* target);
+void copy_object(object* source, object* target);
 
 
 

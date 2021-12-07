@@ -28,11 +28,12 @@ float move_forward(oi_t *sensor_data, int centimeters)
     {
         oi_update(sensor_data);
         sum += sensor_data->distance;
+        lcd_printf("%d", sensor_data->cliffFrontLeftSignal);
 
         obstacle = obstacle_check(sensor_data);
-        if (obstacle_check != 0)
+        if (obstacle != 0)
         {
-            sum -= 50;
+            //sum -= 50;
             break;
         }
     }
@@ -48,21 +49,22 @@ float move_forward(oi_t *sensor_data, int centimeters)
  *  back in "centimeters".
  *
  */
-void move_backward(oi_t *sensor_data, int centimeters)
+float move_backward(oi_t *sensor_data, int centimeters)
 {
     centimeters *= 10;
 
     double sum = 0;
     oi_update(sensor_data);
+    oi_setWheels(-100, -100); //Move backwards, "-500 is max speed"
     while (sum < (centimeters))
     {
-        oi_setWheels(-100, -100); //Move backwards, "-500 is max speed"
         oi_update(sensor_data);
 
         sum -= sensor_data->distance;
     }
 
     oi_setWheels(0, 0);
+    return sum / 10;
 
 }
 
@@ -73,7 +75,7 @@ void move_backward(oi_t *sensor_data, int centimeters)
  *  than the given input angle
  *
  */
-int rotate_clockwise(oi_t *sensor_data, int degrees)
+float rotate_clockwise(oi_t *sensor_data, int degrees)
 {
     double sum = 0;
     oi_setWheels(-30, 30); //Set wheel speed opposite of each other to acheive clockwise rotation
@@ -94,10 +96,10 @@ int rotate_clockwise(oi_t *sensor_data, int degrees)
  *  than the given input angle
  *
  */
-int rotate_counterClockwise(oi_t *sensor_data, int degrees)
+float rotate_counterClockwise(oi_t *sensor_data, int degrees)
 {
     double sum = 0;
-    oi_setWheels(30, -30); //Rotate counter clockwise
+    oi_setWheels(60, -60); //Rotate counter clockwise
     while (sum < degrees)
     {
         oi_update(sensor_data);
@@ -120,6 +122,7 @@ void send_distanceTraveled(float distance, int obstacle)
     char temp[20];
     sprintf(temp, "%f,%d", distance, obstacle);
     uart_sendStr(temp);
+
 }
 
 /*
@@ -129,10 +132,10 @@ void send_distanceTraveled(float distance, int obstacle)
  *              - angle
  *              - obstacle# (if any were detected)
  */
-void send_angleRotated(int angle, int obstacle)
+void send_angleRotated(float angle, int obstacle)
 {
     char temp[20];
-    sprintf(temp, "%d,%d", angle, obstacle);
+    sprintf(temp, "%f,%d", angle, obstacle);
     uart_sendStr(temp);
 }
 
@@ -186,28 +189,28 @@ int obstacle_check(oi_t *sensor_data)
     }
 
 //************BOUNDARY SENSOR***********************************************
-    if (sensor_data->cliffLeftSignal > 2800)
+    if (sensor_data->cliffLeftSignal > 2500)
     {
         oi_setWheels(0, 0);
         boundary_play(sensor_data);
         move_backward(sensor_data, 5);
         return 4;
     }
-    if (sensor_data->cliffFrontLeftSignal > 2800)
+    if (sensor_data->cliffFrontLeftSignal > 2500)
     {
         oi_setWheels(0, 0);
         boundary_play(sensor_data);
         move_backward(sensor_data, 5);
         return 5;
     }
-    if (sensor_data->cliffLeftSignal > 2800)
+    if (sensor_data->cliffFrontRightSignal > 2500)
     {
         oi_setWheels(0, 0);
         boundary_play(sensor_data);
         move_backward(sensor_data, 5);
         return 6;
     }
-    if (sensor_data->cliffLeftSignal > 2800)
+    if (sensor_data->cliffRightSignal > 2500)
     {
         oi_setWheels(0, 0);
         boundary_play(sensor_data);
@@ -216,34 +219,63 @@ int obstacle_check(oi_t *sensor_data)
     }
 
 //************CLIFF BOOLEAN & SIGNAL SENSOR***********************************************
-    if (sensor_data->cliffLeft || sensor_data->cliffLeftSignal < 1600)
+    if (sensor_data->cliffLeft || sensor_data->cliffRightSignal < 800)
     {
         oi_setWheels(0, 0);
         hole_play(sensor_data);
         move_backward(sensor_data, 5);
         return 8;
     }
-    if (sensor_data->cliffFrontLeft || sensor_data->cliffFrontLeft < 1600)
+    if (sensor_data->cliffFrontLeft || sensor_data->cliffRightSignal < 800)
     {
         oi_setWheels(0, 0);
         hole_play(sensor_data);
         move_backward(sensor_data, 5);
         return 9;
     }
-    if (sensor_data->cliffFrontRight || sensor_data->cliffFrontRightSignal < 1600)
+    if (sensor_data->cliffFrontRight || sensor_data->cliffRightSignal < 800)
     {
         oi_setWheels(0, 0);
         hole_play(sensor_data);
         move_backward(sensor_data, 5);
         return 10;
     }
-    if (sensor_data->cliffRight || sensor_data->cliffRightSignal < 1600)
+    if (sensor_data->cliffRight || sensor_data->cliffRightSignal < 800)
     {
         oi_setWheels(0, 0);
         hole_play(sensor_data);
         move_backward(sensor_data, 5);
         return 11;
     }
+
+//    if (sensor_data->cliffLeft)
+//    {
+//        oi_setWheels(0, 0);
+//        hole_play(sensor_data);
+//        move_backward(sensor_data, 5);
+//        return 8;
+//    }
+//    if (sensor_data->cliffFrontLeft)
+//    {
+//        oi_setWheels(0, 0);
+//        hole_play(sensor_data);
+//        move_backward(sensor_data, 5);
+//        return 9;
+//    }
+//    if (sensor_data->cliffFrontRight)
+//    {
+//        oi_setWheels(0, 0);
+//        hole_play(sensor_data);
+//        move_backward(sensor_data, 5);
+//        return 10;
+//    }
+//    if (sensor_data->cliffRight)
+//    {
+//        oi_setWheels(0, 0);
+//        hole_play(sensor_data);
+//        move_backward(sensor_data, 5);
+//        return 11;
+//    }
 
     return 0;
 }

@@ -5,6 +5,7 @@
 // Run each independently of each other
 #define _SERVO_CALIBRATION 0
 #define _IR_CALIBRATION 0
+#define _CLIFF_CALIBRATION 0
 #define _MAIN 1
 
 #include <stdio.h>
@@ -28,7 +29,7 @@ extern volatile int uart_receive_flag;
  */
 int right_calibration_value = 311040;
 int left_calibration_value = 281728;
-int BOT = 8;
+int BOT = 6;
 
 scan_t get_scan;
 oi_t *sensor_data;
@@ -37,6 +38,10 @@ void clear_array(char* command);
 
 int main(void)
 {
+
+#if _CLIFF_CALIBRATION
+    cliff_calibration();
+#endif // _CLIFF_CALIBRATION
 
 #if _SERVO_CALIBRATION
     servo_calibration();

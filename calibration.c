@@ -22,9 +22,29 @@
 #define FAST_INCREMENT 512
 #define SLOW_INCREMENT 128
 
-void bot_calibration(void)
+void cliff_calibration(void)
 {
+    timer_init();
+    lcd_init();
+    uart_init();
+    servo_init();
+    adc_init();
+    ping_init();
+    button_init();
+    oi_t *sensor_data = oi_alloc();
+    oi_init(sensor_data);
 
+    while (1)
+    {
+
+        lcd_printf("L: %d\nFL: %d\nFR: %d\nR: %d\n",
+                   sensor_data->cliffLeftSignal,
+                   sensor_data->cliffFrontLeftSignal,
+                   sensor_data->cliffFrontRightSignal,
+                   sensor_data->cliffRightSignal);
+        oi_update(sensor_data);
+        timer_waitMillis(1000);
+    }
 }
 
 /*
@@ -161,8 +181,14 @@ void IR_calibration(void)
     {
         scan(&get_scan, 90);
         int IR_raw_sample = adc_read();
-
-        lcd_printf("sound: %.4f\nraw: %d\nir: %.4f\nbattery: %.2f%%", get_scan.sound_dist, IR_raw_sample, get_scan.IR_dist, (float) (sensor_data->batteryCharge * (1.0) / sensor_data->batteryCapacity) * 100.0);
+        oi_update(sensor_data);
+        lcd_printf(
+                "sound: %.4f\nraw: %d\nir: %.4f\nbattery: %.2f%%",
+                get_scan.sound_dist,
+                IR_raw_sample,
+                get_scan.IR_dist,
+                (float) (sensor_data->batteryCharge * (1.0)
+                        / sensor_data->batteryCapacity) * 100.0);
         timer_waitMillis(800);
 
     }

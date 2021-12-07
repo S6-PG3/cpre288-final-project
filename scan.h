@@ -51,17 +51,27 @@ void scan_sendData(scan_t *get_scan, int angle);
  * collects information based on:
  *              1. Object starting angle
  *              2. Distance (based on sound distance)
- *              3. Radial widith
+ *              3. Radial width
  *              4. Linear width
+ * @PARAM scanner data
+ * @PARAM object information
+ * @RETURN number of objects
  */
-void scan_objects(scan_t *get_scan, object *objectArray);
+int scan_objects(scan_t *get_scan, object *object_array);
 
+/*
+ * Removes objects with a radial width less than 3. These values are obtained by IR sensor noise.
+ * Updates object_array pointer and objects pointer with the updated objects.
+ */
+void remove_garbage(object *object_array, int *objects);
+
+void confirm_distances(scan_t *get_scan, object *object_array, int *num_objects);
 
 /*
  * Similar function to the scan_sendData method in which
  * this method sends the collected information of the
  * objects detected on the field to the GUI.
  */
-void scan_sendObjects(object *objectArray);
+void scan_sendObjects(object *objectArray, int num_objects);
 
 #endif /* SCAN_H_ */

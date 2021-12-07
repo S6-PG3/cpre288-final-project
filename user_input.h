@@ -18,7 +18,6 @@
 #include "uart.h"
 #include "object.h"
 
-object objectArray[20];
 extern int obstacle_result;
 
 /* 

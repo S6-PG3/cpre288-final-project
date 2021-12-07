@@ -11,12 +11,12 @@
 /*
  * Copies object source to target
  */
-void objectCopy(object* source, object* target) {
+void copy_object(object* source, object* target) {
 
-    target->startAngle = source->startAngle;
+    target->center_angle = source->center_angle;
     target->distance = source->distance;
-    target->radialWidth = source->radialWidth;
-    target->linearWidth = source->linearWidth;
+    target->radial_width = source->radial_width;
+    target->linear_width = source->linear_width;
 
 }
 

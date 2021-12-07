@@ -32,7 +32,7 @@ void adc_init(void)
     ADC0_EMUX_R = 0x0; 						// Default
     ADC0_SSMUX1_R |= 0x000A; 				// First sample AIN10
     ADC0_SSCTL1_R |= 0x00006; 				// Only need to sample once
-    ADC0_SAC_R = 0b101;						// 16x sample averaging
+    ADC0_SAC_R = 0b100;						// 16x sample averaging
     ADC0_ACTSS_R |= 0b0010; 			    // enable SS1, disables SS0, SS2, SS3
 
 } // END adc_init

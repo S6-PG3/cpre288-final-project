@@ -133,19 +133,19 @@ float ping_read(void)
  */
 void ping_send_trigger(void)
 {
-    TIMER3_IMR_R &= 0b101111111111;         // Mask Timer B Capture Mode Event Interrupt (disable)
+    TIMER3_IMR_R &= 0b101111111111; // Mask Timer B Capture Mode Event Interrupt (disable)
 
-// Set PB3 to GPIO output device
-    GPIO_PORTB_AFSEL_R &= 0b11110111;       //disable PB3 as alternate function, set to GPIO
+    // Set PB3 to GPIO output device
+    GPIO_PORTB_AFSEL_R &= 0b11110111; //disable PB3 as alternate function, set to GPIO
     GPIO_PORTB_DIR_R |= 0b00001000;         // Set PB3 to output
 
-// TRIGGER
+    // TRIGGER
     GPIO_PORTB_DATA_R |= 0b00001000;        //PB3 set to high (1)
     timer_waitMillis(0.01);                 //wait 10 microseconds
     GPIO_PORTB_DATA_R &= 0b11110111;        //PB3 set to low (0)
 
-// Set PB3 back to TIMER input device
-    GPIO_PORTB_AFSEL_R |= 0b00001000;       // set PB3 to alternate function (Timer)
+    // Set PB3 back to TIMER input device
+    GPIO_PORTB_AFSEL_R |= 0b00001000;   // set PB3 to alternate function (Timer)
     GPIO_PORTB_DIR_R &= 0b11110111;         // Set PB3 to input
 
     TIMER3_ICR_R |= 0b010000000000; // Clear timer3B capture mode event interrupt
