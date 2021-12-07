@@ -7,28 +7,38 @@
 
 #include "song.h"
 
-song_play(oi_t *sensor_data) {
+unsigned char song_notes[7] = { 67, 66, 64, 62, 64, 0, 64 };
+unsigned char song_duration[7] = { 45, 40, 45, 40, 15, 1, 15 };
+unsigned char note_duration[1] = { 25 };
+unsigned char hole[1] = { 60 };
+unsigned char boundary[1] = { 55 };
+unsigned char object[1] = { 52 };
+
+void song_play(oi_t *sensor_data)
+{
     // G-F#-E-D-E-E
     oi_loadSong(1, 7, song_notes, song_duration);
     oi_play_song(1);
 }
 
-hole_play(oi_t *sensor_data) {
+void hole_play(oi_t *sensor_data)
+{
     // C
     oi_loadSong(1, 1, hole, note_duration);
     oi_play_song(1);
 }
 
-boundary_play(oi_t *sensor_data) {
+void boundary_play(oi_t *sensor_data)
+{
     // G
     oi_loadSong(1, 1, boundary, note_duration);
     oi_play_song(1);
 }
 
-object_play(oi_t *sensor_data) {
+void object_play(oi_t *sensor_data)
+{
     // E
     oi_loadSong(1, 1, object, note_duration);
     oi_play_song(1);
 }
-
 
