@@ -1,19 +1,24 @@
 /*
- * movement.c
+ *  movement.c
  *
  *
- * Collection of programs used to navigate robot and peform some obsacle detection.
+ *  Collection of programs used to navigate robot and peform some obsacle detection.
  *
  *  Created on: Nov 16, 2021
- *      Author: dannycao
+ *  Author: Danny Cao, James Minardi, Ainara Machargo
  */
 
 #ifndef MOVEMENT_H_
 #define MOVEMENT_H_
 
 #include "uart.h"
+#include "open_interface.h"
+#include "object.h"
+#include "Timer.h"
+#include "lcd.h"
+#include "song.h"
 
-int obstacle;
+int obstacle; // Obstacle return value for user_input to use to send to GUI
 
 /*
  *  Method used to navigate robot forward.

@@ -32,11 +32,13 @@ main.obj: C:/ti/ccs1031/ccs/tools/compiler/ti-cgt-arm_20.2.4.LTS/include/stdlib.
 main.obj: ../servo.h
 main.obj: C:/ti/ccs1031/ccs/tools/compiler/ti-cgt-arm_20.2.4.LTS/include/stdlib.h
 main.obj: ../uart.h
+main.obj: ../object.h
 main.obj: ../calibration.h
 main.obj: ../button.h
 main.obj: ../user_input.h
 main.obj: C:/ti/ccs1031/ccs/tools/compiler/ti-cgt-arm_20.2.4.LTS/include/stdlib.h
 main.obj: ../movement.h
+main.obj: ../song.h
 
 ../main.c:
 
@@ -102,6 +104,8 @@ C:/ti/ccs1031/ccs/tools/compiler/ti-cgt-arm_20.2.4.LTS/include/stdlib.h:
 
 ../uart.h:
 
+../object.h:
+
 ../calibration.h:
 
 ../button.h:
@@ -111,4 +115,6 @@ C:/ti/ccs1031/ccs/tools/compiler/ti-cgt-arm_20.2.4.LTS/include/stdlib.h:
 C:/ti/ccs1031/ccs/tools/compiler/ti-cgt-arm_20.2.4.LTS/include/stdlib.h:
 
 ../movement.h:
+
+../song.h:
 

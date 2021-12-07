@@ -16,6 +16,6 @@ void hole_play(oi_t *sensor_data);
 
 void boundary_play(oi_t *sensor_data);
 
-void object_play(oi_t *sensor_data);
+void bump_play(oi_t *sensor_data);
 
 #endif /* SONG_H_ */

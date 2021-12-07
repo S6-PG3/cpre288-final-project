@@ -68,11 +68,11 @@ void ui_execute(oi_t *sensor_data, scan_t *get_scan, char function, int paramete
 			break;
 		case 'a':
 			// Rotate counter clockwise parameter degrees
-			send_angleRotated(rotate_counterClockwise(sensor_data, parameter), obstacle);
+			send_angleRotated(rotate_counterClockwise(sensor_data, parameter), 0);
 		    break;
 		case 'd':
 			// Rotate clockwise parameter degrees
-		    send_angleRotated(rotate_clockwise(sensor_data, parameter), obstacle);
+		    send_angleRotated(rotate_clockwise(sensor_data, parameter), 0);
 			break;
 		case 'm':
 			if (parameter == -1) {

@@ -30,6 +30,7 @@ scan.obj: C:/ti/ccs1031/ccs/tools/compiler/ti-cgt-arm_20.2.4.LTS/include/math.h
 scan.obj: C:/ti/ccs1031/ccs/tools/compiler/ti-cgt-arm_20.2.4.LTS/include/_defs.h
 scan.obj: C:/ti/ccs1031/ccs/tools/compiler/ti-cgt-arm_20.2.4.LTS/include/machine/_limits.h
 scan.obj: ../uart.h
+scan.obj: ../object.h
 
 ../scan.c:
 
@@ -90,4 +91,6 @@ C:/ti/ccs1031/ccs/tools/compiler/ti-cgt-arm_20.2.4.LTS/include/_defs.h:
 C:/ti/ccs1031/ccs/tools/compiler/ti-cgt-arm_20.2.4.LTS/include/machine/_limits.h:
 
 ../uart.h:
+
+../object.h:
 

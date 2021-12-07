@@ -13,17 +13,23 @@ ORDERED_OBJS += \
 "./Timer.obj" \
 "./adc.obj" \
 "./button.obj" \
+"./calibration.obj" \
+"./displayinfo.obj" \
 "./lcd.obj" \
 "./main.obj" \
+"./mission.obj" \
 "./movement.obj" \
 "./object.obj" \
 "./open_interface.obj" \
+"./output.obj" \
 "./ping.obj" \
 "./print.obj" \
 "./scan.obj" \
 "./servo.obj" \
+"./song.obj" \
 "./tm4c123gh6pm_startup_ccs.obj" \
 "./uart.obj" \
+"./user_input.obj" \
 "../tm4c123gh6pm.cmd" \
 $(GEN_CMDS__FLAG) \
 -llibc.a \
@@ -168,8 +174,8 @@ cpre288-final-project.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "Timer.obj" "adc.obj" "button.obj" "lcd.obj" "main.obj" "movement.obj" "object.obj" "open_interface.obj" "ping.obj" "print.obj" "scan.obj" "servo.obj" "tm4c123gh6pm_startup_ccs.obj" "uart.obj" 
-	-$(RM) "Timer.d" "adc.d" "button.d" "lcd.d" "main.d" "movement.d" "object.d" "open_interface.d" "ping.d" "print.d" "scan.d" "servo.d" "tm4c123gh6pm_startup_ccs.d" "uart.d" 
+	-$(RM) "Timer.obj" "adc.obj" "button.obj" "calibration.obj" "displayinfo.obj" "lcd.obj" "main.obj" "mission.obj" "movement.obj" "object.obj" "open_interface.obj" "output.obj" "ping.obj" "print.obj" "scan.obj" "servo.obj" "song.obj" "tm4c123gh6pm_startup_ccs.obj" "uart.obj" "user_input.obj" 
+	-$(RM) "Timer.d" "adc.d" "button.d" "calibration.d" "displayinfo.d" "lcd.d" "main.d" "mission.d" "movement.d" "object.d" "open_interface.d" "output.d" "ping.d" "print.d" "scan.d" "servo.d" "song.d" "tm4c123gh6pm_startup_ccs.d" "uart.d" "user_input.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

@@ -34,6 +34,7 @@ calibration.obj: ../open_interface.h
 calibration.obj: C:/ti/ccs1031/ccs/tools/compiler/ti-cgt-arm_20.2.4.LTS/include/stdlib.h
 calibration.obj: ../scan.h
 calibration.obj: ../uart.h
+calibration.obj: ../object.h
 
 ../calibration.c:
 
@@ -102,4 +103,6 @@ C:/ti/ccs1031/ccs/tools/compiler/ti-cgt-arm_20.2.4.LTS/include/stdlib.h:
 ../scan.h:
 
 ../uart.h:
+
+../object.h:
 

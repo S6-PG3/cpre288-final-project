@@ -1,17 +1,13 @@
 /*
- * movement.c
+ *  movement.c
  *
  *
- * Collection of programs used to navigate robot and peform some obsacle detection.
+ *  Collection of programs used to navigate robot and peform some obsacle detection.
  *
  *  Created on: Nov 16, 2021
- *      Author: dannycao
+ *  Author: Danny Cao, James Minardi, Ainara Machargo
  */
 
-#include "open_interface.h"
-#include "object.h"
-#include "Timer.h"
-#include "lcd.h"
 #include "movement.h"
 
 /*
@@ -34,7 +30,8 @@ float move_forward(oi_t *sensor_data, int centimeters)
         sum += sensor_data->distance;
 
         obstacle = obstacle_check(sensor_data);
-        if (obstacle_check != 0) {
+        if (obstacle_check != 0)
+        {
             sum -= 50;
             break;
         }
@@ -118,7 +115,8 @@ int rotate_counterClockwise(oi_t *sensor_data, int degrees)
  *              - distance
  *              - obstacle# (if any were detected)
  */
-void send_distanceTraveled(float distance, int obstacle){
+void send_distanceTraveled(float distance, int obstacle)
+{
     char temp[20];
     sprintf(temp, "%f,%d", distance, obstacle);
     uart_sendStr(temp);
@@ -131,160 +129,121 @@ void send_distanceTraveled(float distance, int obstacle){
  *              - angle
  *              - obstacle# (if any were detected)
  */
-void send_angleRotated(int angle, int obstacle){
+void send_angleRotated(int angle, int obstacle)
+{
     char temp[20];
     sprintf(temp, "%d,%d", angle, obstacle);
     uart_sendStr(temp);
 }
 
-
 /*
- *  A large method to detect obstacles during movement of the robot.
- *  Utilizes bump sensors and cliff sensors to detect obstacles such as holes,
- *  boundary lines, and small objects undetectable from IR and PING sensors. Method
- *  also includes manuevering program when sensors have been triggered to assist user
- *  with navigation.
+ *  Detects obstacles during cyBot navigation.
+ *  Utilizes bump sensors and cliff sensors to detect holes,
+ *  boundaries, and low-profile objects. When an obstacle is
+ *  detected, the robot stops moving, plays a quick sound,
+ *  and moves backwards a small ammount.
  *
  *     Method Returns:
  *          0 : nothing
- *          1 : left bump sensor triggered
- *          2 : right bump sensor triggered
- *          3 : left cliff sensor detected boundary
- *          4 : left cliff sensor detected hole
- *          5 : Front left cliff sensor detected boundary
- *          6 : Front left cliff sensor detected hole
- *          7 : Front right cliff sensor detected boundary
- *          8 : Front right cliff sensor detected hole
- *          9 : Right cliff sensor detected boundary
- *         10 : Right cliff sensor detected hole
- *
- *     Method Returns: UPDATED?
- *          0 : nothing
- *          1 : left bump sensor
- *          2 : left & right bump sensor
- *          3 : right bump sensor
- *          4 : left cliff sensor detected boundary
- *          5 : Front left cliff sensor detected boundary
- *          6 : Front right cliff sensor detected boundary
- *          7 : Right cliff sensor detected boundary
- *          8 : left cliff sensor detected hole
- *          9 : Front left cliff sensor detected hole
- *         10 : Front right cliff sensor detected hole
- *         11 : Right cliff sensor detected hole
+ *          1 : Left & right bump sensor    -> object
+ *          2 : Left bump sensor            -> object
+ *          3 : Right bump sensor           -> object
+ *          4 : Left cliff sensor           -> boundary
+ *          5 : Front left cliff sensor     -> boundary
+ *          6 : Front right cliff sensor    -> boundary
+ *          7 : Right cliff sensor          -> boundary
+ *          8 : Left cliff sensor           -> hole
+ *          9 : Front left cliff sensor     -> hole
+ *         10 : Front right cliff sensor    -> hole
+ *         11 : Right cliff sensor          -> hole
  *
  *         "{Distance or Angle traveled},{obstacle val}\0"
- *
- *
  */
 int obstacle_check(oi_t *sensor_data)
 {
-//**************BUMPER SENSORS*******************************************
-		//beep if the robot bumps an object
-		unsigned char beep [1] = {60};
-        unsigned char duration[1] =  {25};
 
+//**************BUMPER SENSORS*******************************************
+    if (sensor_data->bumpLeft && sensor_data->bumpRight)
+    {
+        oi_setWheels(0, 0);
+        bump_play(sensor_data);
+        move_backward(sensor_data, 5);
+        return 1; //return a 1 if left AND right bump sensor = true
+    }
     if (sensor_data->bumpLeft)
     {
         oi_setWheels(0, 0); //STOP robot as soon as bump sensor = TRUE
-        move_backward(sensor_data, 3);
-        oi_loadSong(1, 1, beep, duration);
-        oi_play_song(1);
-        return 1; //return a 1 if left bump sensor = true
+        bump_play(sensor_data);
+        move_backward(sensor_data, 5);
+        return 2; //return a 2 if left bump sensor = true
     }
-    if (sensor_data->bumpLeft && sensor_data->bumpRight) {
-            oi_setWheels(0,0);
-            move_backward(sensor_data, 3);
-            oi_loadSong(1, 1, beep, duration);
-            oi_play_song(1);
-            return 2; //return a 2 if left AND right bump sensor = true
-        }
     if (sensor_data->bumpRight)
     {
         oi_setWheels(0, 0); //STOP robot as soon as bumpRight = TRUE
-        move_backward(sensor_data, 3);
-        oi_loadSong(1, 1, beep, duration);
-        oi_play_song(1);
+        bump_play(sensor_data);
+        move_backward(sensor_data, 5);
         return 3; //returns a 3 if right bump sensor = true
     }
-//************CLIFF SENSORS***********************************************
-    if (sensor_data->cliffLeft > 2800 || sensor_data->cliffLeft < 1600)
-    {
-        //TODO: Implement flag?
-        oi_setWheels(0, 0); //STOP, robot sensed white tape or hole
-//        rotate_counterClockwise(sensor_data, 45); //Turn left 45 degrees
-        move_backward(sensor_data, 5); //Move back 5 cm
-//        rotate_clockwise(sensor_data, 45); //revert back to original angle
 
-        if (sensor_data->cliffLeft > 2800){
-            oi_update(sensor_data);
-            return 4; //tape detected for CL
-        }
-        else{
-            oi_update(sensor_data);
-            return 5; //hole detected for CL
-        }
+//************BOUNDARY SENSOR***********************************************
+    if (sensor_data->cliffLeftSignal > 2800)
+    {
+        oi_setWheels(0, 0);
+        boundary_play(sensor_data);
+        move_backward(sensor_data, 5);
+        return 4;
+    }
+    if (sensor_data->cliffFrontLeftSignal > 2800)
+    {
+        oi_setWheels(0, 0);
+        boundary_play(sensor_data);
+        move_backward(sensor_data, 5);
+        return 5;
+    }
+    if (sensor_data->cliffLeftSignal > 2800)
+    {
+        oi_setWheels(0, 0);
+        boundary_play(sensor_data);
+        move_backward(sensor_data, 5);
+        return 6;
+    }
+    if (sensor_data->cliffLeftSignal > 2800)
+    {
+        oi_setWheels(0, 0);
+        boundary_play(sensor_data);
+        move_backward(sensor_data, 5);
+        return 7;
     }
 
-
-    if (sensor_data->cliffFrontLeft > 2800 || sensor_data->cliffFrontLeft < 1600)
+//************CLIFF BOOLEAN & SIGNAL SENSOR***********************************************
+    if (sensor_data->cliffLeft || sensor_data->cliffLeftSignal < 1600)
     {
-        //TODO: Implement flag?
-        oi_setWheels(0, 0); //STOP, robot sensed white tape or hole
-//        rotate_counterClockwise(sensor_data, 60); //Turn left 60 degrees
-        move_backward(sensor_data, 5); //Move back 5 cm
-//        rotate_clockwise(sensor_data, 60); //revert back to original angle
-
-        if (sensor_data->cliffFrontLeft > 2800)
-        {
-            oi_update(sensor_data);
-            return 6; //tape detected for CFL
-        }
-        else
-        {
-            oi_update(sensor_data);
-            return 7; //hole detected for CFL
-        }
+        oi_setWheels(0, 0);
+        hole_play(sensor_data);
+        move_backward(sensor_data, 5);
+        return 8;
+    }
+    if (sensor_data->cliffFrontLeft || sensor_data->cliffFrontLeft < 1600)
+    {
+        oi_setWheels(0, 0);
+        hole_play(sensor_data);
+        move_backward(sensor_data, 5);
+        return 9;
+    }
+    if (sensor_data->cliffFrontRight || sensor_data->cliffFrontRightSignal < 1600)
+    {
+        oi_setWheels(0, 0);
+        hole_play(sensor_data);
+        move_backward(sensor_data, 5);
+        return 10;
+    }
+    if (sensor_data->cliffRight || sensor_data->cliffRightSignal < 1600)
+    {
+        oi_setWheels(0, 0);
+        hole_play(sensor_data);
+        move_backward(sensor_data, 5);
+        return 11;
     }
 
-    if (sensor_data->cliffFrontRight > 2800 || sensor_data->cliffFrontRight < 1600)
-    {
-        //TODO: Implement flag?
-                oi_setWheels(0, 0);
-//                rotate_clockwise(sensor_data, 60);
-                move_backward(sensor_data, 5);
-//                rotate_counterClockwise(sensor_data, 60);
-
-                if (sensor_data->cliffFrontRight > 2800)
-                {
-                    oi_update(sensor_data);
-                    return 8; //tape detected for CFR
-                }
-                else
-                {
-                    oi_update(sensor_data);
-                    return 9; //hole detected for CFR
-                }
-            }
-
-    if (sensor_data->cliffRight > 2800 || sensor_data->cliffRight < 1600)
-    {
-        //TODO: Implement flag?
-               oi_setWheels(0, 0);
-//               rotate_clockwise(sensor_data, 45);
-               move_backward(sensor_data, 5);
-//               rotate_counterClockwise(sensor_data, 45);
-
-               if (sensor_data->cliffRight > 2800){
-                   oi_update(sensor_data);
-                   return 10; //tape detected for CR
-               }
-               else{
-                   oi_update(sensor_data);
-                   return 11; //hole detected for CR
-               }
-           }
-
-return 0;
+    return 0;
 }
-
-

@@ -27,6 +27,9 @@ user_input.obj: C:/ti/ccs1031/ccs/tools/compiler/ti-cgt-arm_20.2.4.LTS/include/s
 user_input.obj: C:/ti/TivaWare_C_Series-2.1.4.178/driverlib/interrupt.h
 user_input.obj: ../lcd.h
 user_input.obj: ../movement.h
+user_input.obj: ../uart.h
+user_input.obj: ../object.h
+user_input.obj: ../song.h
 user_input.obj: ../scan.h
 user_input.obj: ../adc.h
 user_input.obj: C:/ti/ccs1031/ccs/tools/compiler/ti-cgt-arm_20.2.4.LTS/include/stdlib.h
@@ -34,7 +37,6 @@ user_input.obj: ../ping.h
 user_input.obj: C:/ti/ccs1031/ccs/tools/compiler/ti-cgt-arm_20.2.4.LTS/include/stdlib.h
 user_input.obj: ../servo.h
 user_input.obj: C:/ti/ccs1031/ccs/tools/compiler/ti-cgt-arm_20.2.4.LTS/include/stdlib.h
-user_input.obj: ../uart.h
 
 ../user_input.c:
 
@@ -90,6 +92,12 @@ C:/ti/TivaWare_C_Series-2.1.4.178/driverlib/interrupt.h:
 
 ../movement.h:
 
+../uart.h:
+
+../object.h:
+
+../song.h:
+
 ../scan.h:
 
 ../adc.h:
@@ -103,6 +111,4 @@ C:/ti/ccs1031/ccs/tools/compiler/ti-cgt-arm_20.2.4.LTS/include/stdlib.h:
 ../servo.h:
 
 C:/ti/ccs1031/ccs/tools/compiler/ti-cgt-arm_20.2.4.LTS/include/stdlib.h:
-
-../uart.h:
 
