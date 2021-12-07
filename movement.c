@@ -35,6 +35,7 @@ float move_forward(oi_t *sensor_data, int centimeters)
 
         obstacle = obstacle_check(sensor_data);
         if (obstacle_check != 0) {
+            sum -= 50;
             break;
         }
     }
