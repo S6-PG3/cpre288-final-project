@@ -31,6 +31,7 @@ void scan(scan_t *get_scan, int angle)
  * When called, the servo is set a 0 degrees and returns
  * the IR_distance and the Sound_distance. It increments
  * by one degree and collects the same information.
+ * @PARAM scanner data
  */
 void scan_full(scan_t *get_scan)
 {
@@ -46,7 +47,7 @@ void scan_full(scan_t *get_scan)
 }
 
 /*
- * Method used to communicate data colleted from sensors to the GUI interface
+ * Method used to communicate data collected from sensors to the GUI interface
  * for user analysis. The method sends the angle and the IR distance to the GUI.
  */
 void scan_sendData(scan_t *get_scan, int angle)
@@ -63,8 +64,10 @@ void scan_sendData(scan_t *get_scan, int angle)
  * collects information based on:
  *              1. Object starting angle
  *              2. Distance (based on sound distance)
- *              3. Radial widith
+ *              3. Radial width
  *              4. Linear width
+ * @PARAM scanner data
+ * @PARAM object information
  */
 void scan_objects(scan_t *get_scan, object *objectArray)
 {
@@ -83,7 +86,7 @@ void scan_objects(scan_t *get_scan, object *objectArray)
 
         if ((IR_distance) < 55) //Check to see if the IR distance is less than 55 cm
         {
-            if (abs(IR_distance - previous_distance) > 30) //Popuate information on object if IR_distance - previous_distance is greater than 30 cm
+            if (abs(IR_distance - previous_distance) > 30) //Populate information on object if IR_distance - previous_distance is greater than 30 cm
             {
                 if (numObjects != 0) //and if the number of objects does not equal to 0
                 {
@@ -120,6 +123,7 @@ void scan_objects(scan_t *get_scan, object *objectArray)
  * Similar function to the scan_sendData method in which
  * this method sends the collected information of the
  * objects detected on the field to the GUI.
+ * @PARAM object data
  */
 void scan_sendObjects(object *objectArray){
     char temp[50];

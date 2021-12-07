@@ -1,7 +1,7 @@
 /*
  *  adc.h
  *
- * 	ADC and IR sensor functionality. Includes initializaion and reading of ADC samples
+ * 	ADC and IR sensor functionality. Includes initialization and reading of ADC samples
  * 	as well as conversion methods from raw IR samples to distance in centimeters
  *
  *  Created on: Oct 19, 2021
@@ -47,7 +47,7 @@ float adc_to_cm(int raw);
 
 /*
  * Specific bot's conversion equation called by adc_to_cm
- * @param raw - raw IR sample to conver to distance
+ * @param raw - raw IR sample to convert to distance
  * @return distance - distance in centimeters
  */
 float adc_to_cm_1(int raw);

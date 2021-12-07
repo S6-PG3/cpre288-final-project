@@ -2,7 +2,7 @@
  *  calibration.h
  *
  *  Collection of small programs to calibrate different cyBots.
- *  Currently supports semi-atomatic calibration of the servo motor
+ *  Currently supports semi-automatic calibration of the servo motor
  *  and manual calibration of the IR sensor.
  *
  *  Each method is a standalone program meant to be ran independent of others.
@@ -55,7 +55,7 @@ void servo_calibration(void);
  *      y1 ~ a/(x1+b) + c
  *          y1 is distance in cm
  *          x1 is raw ir value
- *      b and c are typcally negative
+ *      b and c are typically negative
  *
  *  Configuration in main.c:
  *      _SERVO_CALIBRATION 0

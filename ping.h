@@ -42,7 +42,7 @@ volatile unsigned int falling_time;
 void ping_init(void);
 
 /*
- * Method to initilize and start up timer interrupt registers.
+ * Method to initialize and start up timer interrupt registers.
  */
 void ping_interrupt_init(void);
 

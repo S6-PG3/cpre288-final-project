@@ -2,7 +2,7 @@
  *  calibration.c
  *
  *  Collection of small programs to calibrate different cyBots.
- *  Currently supports semi-atomatic calibration of the servo motor
+ *  Currently supports semi-automatic calibration of the servo motor
  *  and manual calibration of the IR sensor.
  *
  *  Each method is a standalone program meant to be ran independent of others.
@@ -57,7 +57,7 @@ void servo_calibration(void)
     int right = 1;
 
     //Sets servo to the theoretical 0 degrees position.
-    //Must disable and reenable the timer b before adjusting the match values
+    //Must disable and re-enable the timer b before adjusting the match values
     int match = 0x4A380;     // Theoretical 0 degrees: 304,000 (1ms = 0 degrees)
     TIMER1_CTL_R &= 0b011111111;        // Disable timer b
     TIMER1_TBMATCHR_R = match;
@@ -137,7 +137,7 @@ void servo_calibration(void)
  *      y1 ~ a/(x1+b) + c
  *          y1 is distance in cm
  *          x1 is raw ir value
- *      b and c are typcally negative
+ *      b and c are typically negative
  *
  *  Configuration in main.c:
  *      _SERVO_CALIBRATION 0

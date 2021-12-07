@@ -127,7 +127,7 @@ float adc_to_cm(int raw)
 /*
  * Specific bot's conversion equation called by adc_to_cm.
  * Distance is capped at 100cm
- * @param raw - raw IR sample to conver to distance
+ * @param raw - raw IR sample to convert to distance
  * @return distance - distance in centimeters
  */
 float adc_to_cm_1(int raw)

@@ -55,7 +55,7 @@ void uart_interrupt_init(void)
     IntRegister(INT_UART1, uart_interrupt_handler); // Set interrupt handler to uart_interrupt_handler
     IntMasterEnable();
 
-    UART1_CTL_R |= 0b1100000001;            // Renable UART1
+    UART1_CTL_R |= 0b1100000001;            // Re-enable UART1
 
 } // END uart_interrupt_init
 

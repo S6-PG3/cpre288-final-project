@@ -3,7 +3,7 @@
  *
  *  Parses and executes commands received from user input
  *
- *  Created on: Dec 05, 2021
+ *  Created on: Dec 04, 2021
  *  Author: Ainara Machargo
  */
 
@@ -16,10 +16,9 @@
  #include "Timer.h"
 
 /*
- * Method used to display stats on Roomba's LCD
- * This method will display battery percentage, cliff's front left signal, bump status (left, right, both or none) and distance travveled
- * PARAM: sensor data
- * PARAM: distance desired to travel
+ * Function to display a variety of information: Battery percentage, Bumper status, Cliff signal, and distance traveled from user input on the LCD screen
+ * @PARAM oi_t sensor data from open interface
+ * @PARAM parameter  distance that the roomba will travel input by the user on the GUI
  */
  void displayStats(oi_t *sensor_data, int parameter);
 

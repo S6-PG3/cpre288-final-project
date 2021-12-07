@@ -11,10 +11,14 @@
  #include "Timer.h"
  #include "user_input.h"
  
-void displayStats(oi_t *sensor_data, int parameter){
+/*
+ * Function to display a variety of information: Battery percentage, Bumper status, Cliff signal, and distance traveled from user input on the LCD screen
+ * @PARAM oi_t sensor data from open interface
+ * @PARAM parameter  distance that the roomba will travel input by the user on the GUI
+ */
 
-    //oi_t *sensor_data = oi_alloc(); // Allocating space for open interface struct
-    //oi_init(sensor_data); // Filling sensor data struct with initial data
+
+void displayStats(oi_t *sensor_data, int parameter){
 
     lcd_init();
     timer_init();
@@ -23,7 +27,7 @@ void displayStats(oi_t *sensor_data, int parameter){
 
     //keeps track of bumper status
     char bump [5];
-    //keeps track of distance travelled compared to the user input on the GUI for the robot to move
+    //keeps track of distance traveled compared to the user input on the GUI for the robot to move
     int distTravelled;
 
 
@@ -77,7 +81,7 @@ void displayStats(oi_t *sensor_data, int parameter){
       }
 
       }
-sssss
+
 */
         /*
          * String that contains stats to be displayed on the LCD
