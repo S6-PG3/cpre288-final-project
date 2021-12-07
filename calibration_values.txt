@@ -1,7 +1,7 @@
 
 Bot 06
-int right_calibration_value = 313984;
-int left_calibration_value = 286848;
+int right_calibration_value = 311808;
+int left_calibration_value = 284544;
 
 Bot 11
 int right_calibration_value = 311168;

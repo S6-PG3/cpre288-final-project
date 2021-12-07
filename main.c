@@ -27,8 +27,8 @@ extern volatile int uart_receive_flag;
 /*
  * Run _SERVO_CALIBRATION by itself to find values for these. Currently set for bot06
  */
-int right_calibration_value = 311040;
-int left_calibration_value = 281728;
+int right_calibration_value = 311808;
+int left_calibration_value = 284544;
 int BOT = 6;
 
 scan_t get_scan;
