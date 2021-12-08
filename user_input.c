@@ -90,6 +90,7 @@ void ui_execute(oi_t *sensor_data, scan_t *get_scan, char function, int paramete
 		    break;
 		case 'z':
 			// Program completion
+		    song_play(sensor_data);
 			break;
 		default:
 			// Shouldn't ever go here

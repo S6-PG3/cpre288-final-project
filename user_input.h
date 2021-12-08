@@ -17,6 +17,7 @@
 #include "scan.h"
 #include "uart.h"
 #include "object.h"
+#include "song.h"
 
 extern int obstacle_result;
 

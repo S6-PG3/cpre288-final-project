@@ -5,8 +5,8 @@
 // Run each independently of each other
 #define _SERVO_CALIBRATION 0
 #define _IR_CALIBRATION 0
-#define _CLIFF_CALIBRATION 1
-#define _MAIN 0
+#define _CLIFF_CALIBRATION 0
+#define _MAIN 1
 
 #include <stdio.h>
 #include "open_interface.h"

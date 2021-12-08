@@ -247,34 +247,5 @@ int obstacle_check(oi_t *sensor_data)
         return 11;
     }
 
-//    if (sensor_data->cliffLeft)
-//    {
-//        oi_setWheels(0, 0);
-//        hole_play(sensor_data);
-//        move_backward(sensor_data, 5);
-//        return 8;
-//    }
-//    if (sensor_data->cliffFrontLeft)
-//    {
-//        oi_setWheels(0, 0);
-//        hole_play(sensor_data);
-//        move_backward(sensor_data, 5);
-//        return 9;
-//    }
-//    if (sensor_data->cliffFrontRight)
-//    {
-//        oi_setWheels(0, 0);
-//        hole_play(sensor_data);
-//        move_backward(sensor_data, 5);
-//        return 10;
-//    }
-//    if (sensor_data->cliffRight)
-//    {
-//        oi_setWheels(0, 0);
-//        hole_play(sensor_data);
-//        move_backward(sensor_data, 5);
-//        return 11;
-//    }
-
     return 0;
 }
