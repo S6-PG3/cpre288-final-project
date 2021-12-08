@@ -15,6 +15,7 @@
 #include "driverlib/interrupt.h"
 #include <stdint.h>
 #include <stdbool.h>
+#include "lcd.h"
 
 /*
  * Data received from UART

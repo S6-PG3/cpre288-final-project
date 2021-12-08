@@ -28,7 +28,6 @@ float move_forward(oi_t *sensor_data, int centimeters)
     {
         oi_update(sensor_data);
         sum += sensor_data->distance;
-        lcd_printf("%d", sensor_data->cliffFrontLeftSignal);
 
         obstacle = obstacle_check(sensor_data);
         if (obstacle != 0)
@@ -189,28 +188,28 @@ int obstacle_check(oi_t *sensor_data)
     }
 
 //************BOUNDARY SENSOR***********************************************
-    if (sensor_data->cliffLeftSignal > 2500)
+    if (sensor_data->cliffLeftSignal > 2650)
     {
         oi_setWheels(0, 0);
         boundary_play(sensor_data);
         move_backward(sensor_data, 5);
         return 4;
     }
-    if (sensor_data->cliffFrontLeftSignal > 2500)
+    if (sensor_data->cliffFrontLeftSignal > 2650)
     {
         oi_setWheels(0, 0);
         boundary_play(sensor_data);
         move_backward(sensor_data, 5);
         return 5;
     }
-    if (sensor_data->cliffFrontRightSignal > 2500)
+    if (sensor_data->cliffFrontRightSignal > 2650)
     {
         oi_setWheels(0, 0);
         boundary_play(sensor_data);
         move_backward(sensor_data, 5);
         return 6;
     }
-    if (sensor_data->cliffRightSignal > 2500)
+    if (sensor_data->cliffRightSignal > 2650)
     {
         oi_setWheels(0, 0);
         boundary_play(sensor_data);
@@ -219,28 +218,28 @@ int obstacle_check(oi_t *sensor_data)
     }
 
 //************CLIFF BOOLEAN & SIGNAL SENSOR***********************************************
-    if (sensor_data->cliffLeft || sensor_data->cliffRightSignal < 800)
+    if (sensor_data->cliffLeft || sensor_data->cliffRightSignal < 500)
     {
         oi_setWheels(0, 0);
         hole_play(sensor_data);
         move_backward(sensor_data, 5);
         return 8;
     }
-    if (sensor_data->cliffFrontLeft || sensor_data->cliffRightSignal < 800)
+    if (sensor_data->cliffFrontLeft || sensor_data->cliffRightSignal < 500)
     {
         oi_setWheels(0, 0);
         hole_play(sensor_data);
         move_backward(sensor_data, 5);
         return 9;
     }
-    if (sensor_data->cliffFrontRight || sensor_data->cliffRightSignal < 800)
+    if (sensor_data->cliffFrontRight || sensor_data->cliffRightSignal < 500)
     {
         oi_setWheels(0, 0);
         hole_play(sensor_data);
         move_backward(sensor_data, 5);
         return 10;
     }
-    if (sensor_data->cliffRight || sensor_data->cliffRightSignal < 800)
+    if (sensor_data->cliffRight || sensor_data->cliffRightSignal < 500)
     {
         oi_setWheels(0, 0);
         hole_play(sensor_data);

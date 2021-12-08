@@ -81,9 +81,10 @@ void uart_sendChar(char data)
 {
     while (UART1_FR_R & 0b00100000 == 0)        // Wait while transmit FIFO is full
     {
+        lcd_printf("Waiting in\nuart_sendChar");
     }
     UART1_DR_R = data;                          // Send data
-    timer_waitMillis(1);                        // Does not work without
+    timer_waitMillis(2);                        // Does not work without
 
 } // END uart_sendChar
 

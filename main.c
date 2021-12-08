@@ -5,8 +5,8 @@
 // Run each independently of each other
 #define _SERVO_CALIBRATION 0
 #define _IR_CALIBRATION 0
-#define _CLIFF_CALIBRATION 0
-#define _MAIN 1
+#define _CLIFF_CALIBRATION 1
+#define _MAIN 0
 
 #include <stdio.h>
 #include "open_interface.h"
@@ -68,6 +68,7 @@ int main(void)
     int cmd_index = 0;
     while (1)
     {
+        lcd_printf("Waiting for cmd");
         if (uart_receive_flag == 1)
         {
             uart_receive_flag = 0;
