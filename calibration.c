@@ -22,6 +22,9 @@
 #define FAST_INCREMENT 512
 #define SLOW_INCREMENT 128
 
+/*
+ * Simple program to display cliff signal values to lcd for calibration purposes.
+ */
 void cliff_calibration(void)
 {
     timer_init();
