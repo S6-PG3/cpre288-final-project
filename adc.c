@@ -1,7 +1,8 @@
 /*
- *  adc.c
+ *  adc.h
  *
- * 	ADC and IR sensor functionality
+ * 	ADC and IR sensor functionality. Includes initialization and reading of ADC samples
+ * 	as well as conversion methods from raw IR samples to distance in centimeters
  *
  *  Created on: Oct 19, 2021
  *  Author: James Minardi
