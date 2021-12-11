@@ -28,7 +28,9 @@
 #include "open_interface.h"
 #include "scan.h"
 
-
+/*
+ * Simple program to display cliff signal values to lcd for calibration purposes.
+ */
 void cliff_calibration(void);
 /*
  *  Small program to calibrate the servo motor.
